@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Fonctions Affines - Exercices Infinis</title>
+    <!-- Tailwind CSS pour un design moderne et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font ludique et propre -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+        .progress-bar {
+            transition: width 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800">
+
+    <!-- Header / Barre de progression "Duolingo style" -->
+    <header class="bg-white border-b-2 border-slate-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto flex items-center justify-between gap-4">
+            <button onclick="goToStep(1)" class="text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
+            <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden">
+                <div id="progressBar" class="progress-bar bg-green-500 h-full w-[16%]"></div>
+            </div>
+            <div class="flex items-center gap-1 font-bold text-amber-500">
+                <span>🔥</span> <span id="xpCount">10 XP</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Zone principale de contenu -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full bg-white border-2 border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            
+            <!-- ÉTAPE 1 : La Machine à Transformer -->
+            <div id="step1" class="step-content">
+                <div class="text-center mb-6">
+                    <span class="text-4xl">🤖</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mt-2">C'est quoi une fonction ?</h2>
+                    <p class="text-slate-500 text-sm">Étape 1 sur 6</p>
+                </div>
+                <div class="space-y-4 text-lg">
+                    <p>Imagine une <strong>machine magique</strong>. Tu y glisses un nombre au départ, la machine fait un calcul, et un nouveau nombre ressort.</p>
+                    <p class="bg-slate-100 p-4 rounded-xl border border-slate-200 text-center font-semibold">
+                        En maths, cette machine s'appelle une <strong>fonction</strong>, souvent notée <span class="text-blue-600 font-extrabold">f</span>.
+                    </p>
+                    <div class="bg-blue-50 p-6 rounded-xl border-2 border-blue-100 flex flex-col items-center gap-4">
+                        <span class="font-bold text-blue-800">Essaie la machine "Multiplier par 2 et ajouter 3" :</span>
+                        <div class="flex items-center gap-3">
+                            <input type="number" id="machineInput" value="5" class="w-20 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-lg focus:outline-none focus:border-blue-500">
+                            <span class="text-2xl">➔</span>
+                            <div class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">Machine f</div>
+                            <span class="text-2xl font-bold">➔</span>
+                            <span id="machineOutput" class="text-2xl font-black text-green-600 bg-white border-2 border-green-200 px-4 py-1 rounded-lg">13</span>
+                        </div>
+                        <p class="text-xs text-slate-500">On écrit mathématiquement : <span class="font-bold text-slate-700">f(x) = 2x + 3</span> (ici, x vaut <span id="machineValX">5</span>).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÉTAPE 2 : La formule mystère -->
+            <div id="step2" class="step-content hidden">
+                <div class="text-center mb-6">
+                    <span class="text-4xl">🔑</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mt-2">La Formule de l'Affine</h2>
+                    <p class="text-slate-500 text-sm">Étape 2 sur 6</p>
+                </div>
+                <div class="space-y-4 text-base">
+                    <p>Une <strong>fonction affine</strong>, c'est une formule très précise qui s'écrit toujours sous cette forme :</p>
+                    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 text-center my-4">
+                        <span class="text-3xl font-black text-emerald-700">f(x) = <span class="text-red-500">a</span>x + <span class="text-blue-500">b</span></span>
+                    </div>
+                    <p>Prenons un exemple de la vie courante : un trajet en taxi.</p>
+                    <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                        <li><strong>Prise en charge</strong> (frais de départ fixes) : <span class="text-blue-500 font-bold">3 €</span> (même si le taxi ne bouge pas).</li>
+                        <li><strong>Prix par kilomètre</strong> parcouru : <span class="text-red-500 font-bold">2 €</span>.</li>
+                    </ul>
+                    <p class="bg-slate-100 p-3 rounded-lg text-center font-semibold text-slate-700">
+                        Pour <span class="font-bold">x</span> kilomètres, tu paies : <span class="text-emerald-700 font-bold">f(x) = 2x + 3</span>
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div class="bg-red-50 border border-red-200 p-2 rounded-lg text-center">
+                            <span class="block text-xs uppercase font-bold text-red-500">Coefficient a</span>
+                            <span class="font-extrabold text-lg text-red-600">2</span> (ce qui varie)
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 p-2 rounded-lg text-center">
+                            <span class="block text-xs uppercase font-bold text-blue-500">Ordonnée b</span>
+                            <span class="font-extrabold text-lg text-blue-600">3</span> (le départ fixe)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÉTAPE 3 : Le Point de Départ "b" -->
+            <div id="step3" class="step-content hidden">
+                <div class="text-center mb-4">
+                    <span class="text-4xl">📍</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mt-2">L'ordonnée à l'origine (b)</h2>
+                    <p class="text-slate-500 text-sm">Étape 3 sur 6</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 items-center">
+                    <div class="space-y-3 text-sm">
+                        <p>Dans la représentation graphique (qui est toujours une <strong>droite</strong>), le nombre <span class="text-blue-500 font-bold">b</span> est l'endroit précis où la droite coupe l'axe vertical (les ordonnées).</p>
+                        <p class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <strong>Bouge le curseur ci-dessous</strong> pour observer comment le point de départ se déplace sur l'axe vertical.
+                        </p>
+                        <div class="bg-slate-100 p-3 rounded-lg">
+                            <label class="block font-bold mb-1 text-slate-700">Valeur de b : <span id="valB" class="text-blue-600 font-extrabold">2</span></label>
+                            <input type="range" id="sliderB" min="-4" max="4" step="1" value="2" class="w-full accent-blue-500">
+                        </div>
+                        <p class="text-xs text-slate-500 italic">Formule actuelle : f(x) = 1x + <span id="formulaB" class="font-bold text-blue-600">2</span></p>
+                    </div>
+                    <!-- Zone Graphique SVG interactive -->
+                    <div class="flex justify-center">
+                        <div class="bg-white border-2 border-slate-200 rounded-xl p-2 shadow-inner">
+                            <svg id="graph3" width="240" height="240" class="overflow-visible"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÉTAPE 4 : La Pente "a" -->
+            <div id="step4" class="step-content hidden">
+                <div class="text-center mb-4">
+                    <span class="text-4xl">📈</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mt-2">Le coefficient directeur (a)</h2>
+                    <p class="text-slate-500 text-sm">Étape 4 sur 6</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 items-center">
+                    <div class="space-y-3 text-sm">
+                        <p>Le nombre <span class="text-red-500 font-bold">a</span> s'appelle le <strong>coefficient directeur</strong>. C'est lui qui indique la "pente" de la droite.</p>
+                        <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li>Si <span class="text-green-600 font-bold">a est positif (+)</span>, la droite <strong>monte</strong>.</li>
+                            <li>Si <span class="text-red-600 font-bold">a est négatif (-)</span>, la droite <strong>descend</strong>.</li>
+                            <li>Si <span class="font-bold">a = 0</span>, la droite est <strong>horizontale</strong> (fonction constante !).</li>
+                        </ul>
+                        <div class="bg-slate-100 p-3 rounded-lg">
+                            <label class="block font-bold mb-1 text-slate-700">Valeur de a (pente) : <span id="valA" class="text-red-600 font-extrabold">1.5</span></label>
+                            <input type="range" id="sliderA" min="-3" max="3" step="0.5" value="1.5" class="w-full accent-red-500">
+                        </div>
+                        <p class="text-xs text-slate-500 italic">Formule actuelle : f(x) = <span id="formulaA" class="font-bold text-red-600">1.5</span>x + 1</p>
+                    </div>
+                    <!-- Zone Graphique SVG interactive -->
+                    <div class="flex justify-center">
+                        <div class="bg-white border-2 border-slate-200 rounded-xl p-2 shadow-inner">
+                            <svg id="graph4" width="240" height="240" class="overflow-visible"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÉTAPE 5 : Le Quiz (Généré dynamiquement) -->
+            <div id="step5" class="step-content hidden">
+                <div class="text-center mb-4">
+                    <span class="text-4xl">🎲</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mt-2">Le Défi Aléatoire</h2>
+                    <p class="text-slate-500 text-sm">Étape 5 sur 6</p>
+                    <p class="text-xs text-emerald-600 font-bold bg-emerald-50 inline-block px-3 py-1 rounded-full mt-1">Exercices générés spécialement pour toi !</p>
+                </div>
+                <div id="quizContainer" class="space-y-4">
+                    <!-- Les questions du quiz seront injectées ici par Javascript -->
+                </div>
+            </div>
+
+            <!-- ÉTAPE 6 : Succès -->
+            <div id="step6" class="step-content hidden text-center space-y-6 py-6">
+                <div>
+                    <span class="text-6xl animate-bounce inline-block">🏆</span>
+                    <h2 class="text-3xl font-extrabold text-emerald-600 mt-4">Félicitations !</h2>
+                    <p class="text-slate-600 text-lg mt-2">Tu as validé le défi avec brio !</p>
+                </div>
+                
+                <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-6 max-w-md mx-auto">
+                    <h3 class="font-bold text-emerald-800 mb-2">🏆 Ton Certificat de Réussite</h3>
+                    <p class="text-sm text-emerald-700 mb-4">Tu as maîtrisé :</p>
+                    <ul class="text-left text-xs space-y-2 text-slate-700 font-semibold">
+                        <li>✅ Identifier les coefficients <strong>a</strong> et <strong>b</strong>.</li>
+                        <li>✅ Prévoir si une droite monte ou descend grâce au signe de <strong>a</strong>.</li>
+                        <li>✅ Trouver graphiquement l'ordonnée à l'origine <strong>b</strong>.</li>
+                        <li>✅ Calculer l'image d'un nombre par calcul mental rapide.</li>
+                    </ul>
+                </div>
+
+                <button onclick="restartApp()" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all text-white font-extrabold py-3 px-8 rounded-xl shadow-md">
+                    Générer de nouveaux exercices 🔄
+                </button>
+            </div>
+
+            <!-- Barre de boutons inférieurs de navigation -->
+            <div id="navigationButtons" class="mt-8 border-t-2 border-slate-100 pt-6 flex justify-between items-center">
+                <button id="btnPrev" onclick="prevStep()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold py-3 px-6 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    Retour
+                </button>
+                <button id="btnNext" onclick="nextStep()" class="bg-green-500 hover:bg-green-600 text-white font-extrabold py-3 px-8 rounded-xl shadow-md transition-all active:scale-95">
+                    Continuer ➔
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t-2 border-slate-200 py-4 text-center text-xs text-slate-400">
+        Créé avec soin pour les élèves de 3ème • Des milliers de combinaisons d'exercices possibles.
+    </footer>
+
+    <!-- Script logique d'interactivité et de génération aléatoire -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+        let score = 10; // XP de départ
+
+        // Stockage des questions générées dynamiquement
+        let dynamicQuizQuestions = [];
+        let currentQuizIndex = 0;
+        let hasAnsweredQuiz = false;
+
+        // Fonction utilitaire pour générer des nombres aléatoires
+        function getRandomInt(min, max, avoid = [0]) {
+            let num;
+            do {
+                num = Math.floor(Math.random() * (max - min + 1)) + min;
+            } while (avoid.includes(num));
+            return num;
+        }
+
+        // Formatage propre de ax + b (ex: f(x) = -2x - 3)
+        function formatFunctionFormula(a, b) {
+            let partA = "";
+            if (a === 1) partA = "x";
+            else if (a === -1) partA = "-x";
+            else partA = `${a}x`;
+
+            let partB = "";
+            if (b > 0) partB = ` + ${b}`;
+            else if (b < 0) partB = ` - ${Math.abs(b)}`;
+            // Si b == 0, on n'écrit rien (fonction linéaire)
+
+            return `f(x) = ${partA}${partB}`;
+        }
+
+        // Mélanger un tableau (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // GENERATEUR DE QUIZ DYNAMIQUE ET UNIQUE
+        function generateDynamicQuiz() {
+            dynamicQuizQuestions = [];
+
+            // Question 1 : Trouver 'a' (coefficient directeur)
+            let a1 = getRandomInt(-9, 9, [0, 1, -1]);
+            let b1 = getRandomInt(-9, 9, [0, a1]);
+            let formula1 = formatFunctionFormula(a1, b1);
+            dynamicQuizQuestions.push({
+                question: `Dans la fonction affine <span class="text-blue-600 font-extrabold">${formula1}</span>, combien vaut le <strong>coefficient directeur (a)</strong> ?`,
+                options: [
+                    `${a1}`,
+                    `${b1}`,
+                    `x`,
+                    `-${a1}`
+                ],
+                correctValue: `${a1}`,
+                explanation: `Le coefficient directeur <strong>a</strong> est le nombre collé à la variable x. Dans <span class="text-blue-600 font-semibold">${formula1}</span>, c'est bien <strong>${a1}</strong>.`
+            });
+
+            // Question 2 : Trouver 'b' (ordonnée à l'origine)
+            let a2 = getRandomInt(-9, 9, [0, 1, -1]);
+            let b2 = getRandomInt(-9, 9, [0, a2]);
+            let formula2 = formatFunctionFormula(a2, b2);
+            dynamicQuizQuestions.push({
+                question: `Dans la fonction affine <span class="text-blue-600 font-extrabold">${formula2}</span>, combien vaut l'<strong>ordonnée à l'origine (b)</strong> ?`,
+                options: [
+                    `${b2}`,
+                    `${a2}`,
+                    `0`,
+                    `-${b2}`
+                ],
+                correctValue: `${b2}`,
+                explanation: `L'ordonnée à l'origine <strong>b</strong> est le nombre "seul" (la constante de départ). Dans <span class="text-blue-600 font-semibold">${formula2}</span>, c'est bien <strong>${b2}</strong>.`
+            });
+
+            // Question 3 : Sens de variation (monte ou descend)
+            let a3 = getRandomInt(-8, 8, [0]);
+            let b3 = getRandomInt(-9, 9);
+            let formula3 = formatFunctionFormula(a3, b3);
+            let goesUp = a3 > 0;
+            dynamicQuizQuestions.push({
+                question: `Si on dessine la fonction <span class="text-blue-600 font-extrabold">${formula3}</span> dans un repère, que va faire sa droite ?`,
+                options: [
+                    "Elle va monter (croissante)",
+                    "Elle va descendre (décroissante)",
+                    "Elle restera parfaitement horizontale",
+                    "Elle fera des vagues"
+                ],
+                correctValue: goesUp ? "Elle va monter (croissante)" : "Elle va descendre (décroissante)",
+                explanation: `La direction de la droite dépend du signe de <strong>a</strong> (le coefficient directeur). Ici, a vaut <strong>${a3}</strong>, ce qui est ${goesUp ? 'positif' : 'négatif'}. La droite va donc <strong>${goesUp ? 'monter' : 'descendre'}</strong>.`
+            });
+
+            // Question 4 : Calculer l'image (f(x) pour un petit x)
+            let a4 = getRandomInt(2, 5, [0]);
+            let b4 = getRandomInt(1, 5, [0]);
+            let xTarget = getRandomInt(2, 4);
+            let correctCalc = a4 * xTarget + b4;
+            let formula4 = formatFunctionFormula(a4, b4);
+            dynamicQuizQuestions.push({
+                question: `On te donne la fonction <span class="text-blue-600 font-extrabold">${formula4}</span>. Calcule l'image de <strong>${xTarget}</strong> (c'est-à-dire le nombre de sortie quand x = ${xTarget}).`,
+                options: [
+                    `${correctCalc}`,
+                    `${a4 + b4}`, // Erreur classique d'addition brute
+                    `${a4 * xTarget - b4}`, // Erreur de signe
+                    `${correctCalc + getRandomInt(2, 4)}` // Faux nombre aléatoire
+                ],
+                correctValue: `${correctCalc}`,
+                explanation: `On remplace x par ${xTarget} dans la formule :<br>f(${xTarget}) = ${a4} × ${xTarget} + ${b4}<br>f(${xTarget}) = ${a4 * xTarget} + ${b4} = <strong>${correctCalc}</strong>.`
+            });
+
+            // Pour chaque question, on mélange les options et on trouve le nouvel index correct
+            dynamicQuizQuestions.forEach(q => {
+                // S'assurer de l'unicité des options de réponse
+                q.options = [...new Set(q.options)]; // Retire les doublons accidentels
+                while (q.options.length < 4) {
+                    let randNum = getRandomInt(-15, 25);
+                    if (!q.options.includes(`${randNum}`)) {
+                        q.options.push(`${randNum}`);
+                    }
+                }
+                
+                shuffleArray(q.options);
+                q.correctIndex = q.options.indexOf(q.correctValue);
+            });
+        }
+
+        // Initialisation de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            generateDynamicQuiz(); // Génération initiale
+            updateStepView();
+            initInteractiveMachine();
+            initInteractiveGraphs();
+        });
+
+        function updateStepView() {
+            // Masquer toutes les étapes
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            // Afficher l'étape courante
+            document.getElementById(`step${currentStep}`).classList.remove('hidden');
+
+            // Gérer les boutons du bas
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const nav = document.getElementById('navigationButtons');
+
+            if (currentStep === 1) {
+                btnPrev.disabled = true;
+            } else {
+                btnPrev.disabled = false;
+            }
+
+            if (currentStep === 5) {
+                // Étape Quiz : la barre de navigation classique est masquée, gérée par le quiz
+                nav.classList.add('hidden');
+                loadQuizQuestion();
+            } else if (currentStep === 6) {
+                nav.classList.add('hidden');
+            } else {
+                nav.classList.remove('hidden');
+                btnNext.innerHTML = "Continuer ➔";
+            }
+
+            // Mettre à jour la barre de progression
+            const progressPercent = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+            document.getElementById('xpCount').innerText = `${score} XP`;
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                score += 10;
+                updateStepView();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepView();
+            }
+        }
+
+        function restartApp() {
+            // On régénère de nouveaux exercices à chaque redémarrage complet ou réussite !
+            generateDynamicQuiz();
+            currentStep = 1;
+            score = 10;
+            currentQuizIndex = 0;
+            hasAnsweredQuiz = false;
+            updateStepView();
+        }
+
+        /* --- ÉTAPE 1 : Machine à transformer --- */
+        function initInteractiveMachine() {
+            const inputEl = document.getElementById('machineInput');
+            const outputEl = document.getElementById('machineOutput');
+            const valXEl = document.getElementById('machineValX');
+
+            const calculate = () => {
+                let val = parseInt(inputEl.value) || 0;
+                let result = 2 * val + 3;
+                outputEl.innerText = result;
+                valXEl.innerText = val;
+            };
+
+            inputEl.addEventListener('input', calculate);
+        }
+
+        /* --- ÉTAPES 3 & 4 : Graphiques Interactifs (SVG) --- */
+        function initInteractiveGraphs() {
+            const sliderB = document.getElementById('sliderB');
+            const sliderA = document.getElementById('sliderA');
+
+            function drawGrid(svgId) {
+                const svg = document.getElementById(svgId);
+                svg.innerHTML = ''; // Nettoyer
+
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("width", "100%");
+                rect.setAttribute("height", "100%");
+                rect.setAttribute("fill", "#f8fafc");
+                rect.setAttribute("rx", "8");
+                svg.appendChild(rect);
+
+                for (let i = -5; i <= 5; i++) {
+                    let pos = 120 + i * 20;
+                    let lineX = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    lineX.setAttribute("x1", pos); lineX.setAttribute("y1", 0); lineX.setAttribute("x2", pos); lineX.setAttribute("y2", 240);
+                    lineX.setAttribute("stroke", i === 0 ? "#64748b" : "#cbd5e1");
+                    lineX.setAttribute("stroke-width", i === 0 ? "2" : "1");
+                    svg.appendChild(lineX);
+
+                    let lineY = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    lineY.setAttribute("x1", 0); lineY.setAttribute("y1", pos); lineY.setAttribute("x2", 240); lineY.setAttribute("y2", pos);
+                    lineY.setAttribute("stroke", i === 0 ? "#64748b" : "#cbd5e1");
+                    lineY.setAttribute("stroke-width", i === 0 ? "2" : "1");
+                    svg.appendChild(lineY);
+                }
+
+                let arrowX = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                arrowX.setAttribute("points", "235,116 240,120 235,124");
+                arrowX.setAttribute("fill", "#64748b");
+                svg.appendChild(arrowX);
+
+                let arrowY = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                arrowY.setAttribute("points", "116,5 120,0 124,5");
+                arrowY.setAttribute("fill", "#64748b");
+                svg.appendChild(arrowY);
+            }
+
+            function updateGraph(svgId, a, b, highlightPoint = false) {
+                drawGrid(svgId);
+                const svg = document.getElementById(svgId);
+
+                let x1 = -6; let y1 = a * x1 + b;
+                let x2 = 6; let y2 = a * x2 + b;
+
+                let x1_s = 120 + x1 * 20; let y1_s = 120 - y1 * 20;
+                let x2_s = 120 + x2 * 20; let y2_s = 120 - y2 * 20;
+
+                let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", x1_s); line.setAttribute("y1", y1_s);
+                line.setAttribute("x2", x2_s); line.setAttribute("y2", y2_s);
+                line.setAttribute("stroke", "#10b981");
+                line.setAttribute("stroke-width", "3");
+                svg.appendChild(line);
+
+                if (highlightPoint) {
+                    let dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    dot.setAttribute("cx", 120);
+                    dot.setAttribute("cy", 120 - b * 20);
+                    dot.setAttribute("r", "6");
+                    dot.setAttribute("fill", "#3b82f6");
+                    svg.appendChild(dot);
+                }
+            }
+
+            sliderB.addEventListener('input', (e) => {
+                let val = parseFloat(e.target.value);
+                document.getElementById('valB').innerText = val;
+                document.getElementById('formulaB').innerText = val >= 0 ? `+ ${val}` : `- ${Math.abs(val)}`;
+                updateGraph('graph3', 1, val, true);
+            });
+
+            sliderA.addEventListener('input', (e) => {
+                let val = parseFloat(e.target.value);
+                document.getElementById('valA').innerText = val;
+                document.getElementById('formulaA').innerText = val;
+                updateGraph('graph4', val, 1, false);
+            });
+
+            updateGraph('graph3', 1, 2, true);
+            updateGraph('graph4', 1.5, 1, false);
+        }
+
+        /* --- ÉTAPE 5 : Système de Quiz Dynamique --- */
+        function loadQuizQuestion() {
+            const container = document.getElementById('quizContainer');
+            const q = dynamicQuizQuestions[currentQuizIndex];
+            hasAnsweredQuiz = false;
+
+            let optionsHtml = q.options.map((opt, idx) => `
+                <button onclick="checkAnswer(${idx})" id="opt-${idx}" class="w-full text-left p-4 border-2 border-slate-200 hover:border-blue-300 rounded-xl font-semibold transition-all hover:bg-slate-50 flex items-center justify-between">
+                    <span>${opt}</span>
+                    <span class="indicator text-xl"></span>
+                </button>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-150 mb-4 font-bold text-center text-indigo-700 flex justify-between items-center">
+                    <span>Question ${currentQuizIndex + 1} / ${dynamicQuizQuestions.length}</span>
+                    <span class="text-xs text-indigo-500 font-semibold italic">Générée de manière unique 🎲</span>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-800 mb-4">${q.question}</h3>
+                <div class="space-y-3">
+                    ${optionsHtml}
+                </div>
+                <div id="explanationBox" class="hidden p-4 rounded-xl border text-sm mt-4">
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="btnQuizNext" onclick="nextQuizOrStep()" class="bg-blue-600 text-white font-extrabold py-3 px-8 rounded-xl opacity-50 cursor-not-allowed" disabled>
+                        Vérifier
+                    </button>
+                </div>
+            `;
+        }
+
+        function checkAnswer(selectedIdx) {
+            if (hasAnsweredQuiz) return;
+            hasAnsweredQuiz = true;
+
+            const q = dynamicQuizQuestions[currentQuizIndex];
+            const isCorrect = selectedIdx === q.correctIndex;
+            const explanationBox = document.getElementById('explanationBox');
+            const btnNext = document.getElementById('btnQuizNext');
+
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-${idx}`);
+                btn.disabled = true;
+                btn.classList.remove('hover:border-blue-300', 'hover:bg-slate-50');
+                if (idx === q.correctIndex) {
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+                    btn.querySelector('.indicator').innerText = '✅';
+                } else if (idx === selectedIdx) {
+                    btn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900');
+                    btn.querySelector('.indicator').innerText = '❌';
+                }
+            });
+
+            explanationBox.classList.remove('hidden');
+            if (isCorrect) {
+                explanationBox.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
+                explanationBox.innerHTML = `<strong>Très bien joué !</strong> 🎉 <br>${q.explanation}`;
+                score += 15;
+            } else {
+                explanationBox.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-800');
+                explanationBox.innerHTML = `<strong>Pas tout à fait...</strong> 🤔 <br>${q.explanation}`;
+            }
+
+            document.getElementById('xpCount').innerText = `${score} XP`;
+
+            btnNext.disabled = false;
+            btnNext.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnNext.innerText = "Continuer";
+        }
+
+        function nextQuizOrStep() {
+            if (currentQuizIndex < dynamicQuizQuestions.length - 1) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                currentStep = 6;
+                updateStepView();
+            }
+        }
+    </script>
+</body>
+</html>
